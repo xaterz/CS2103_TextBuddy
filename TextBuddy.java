@@ -1,6 +1,7 @@
 package textbuddy.ce2;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 /**
@@ -305,6 +306,17 @@ public class TextBuddy {
 		} else {
 			showToUser(MESSAGE_SAVE_CANCELLED);
 		}
+	}
+	
+	static Comparator<String> compareLine = new Comparator<String>() {
+		@Override
+		public int compare(String s1, String s2) {
+			return s1.compareTo(s2);
+		}
+	};
+	
+	static void sortContent(){
+		textContent.sort(compareLine);
 	}
 	
 	/**
