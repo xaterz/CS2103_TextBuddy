@@ -179,6 +179,9 @@ public class TextBuddy {
 				case "save" :
 					saveContent();
 					break;
+				case "sort" :
+					sortContent();
+					break;
 				case "exit" :
 					exitProgram();
 				default:
