@@ -165,6 +165,24 @@ public class TextBuddyTest {
 		TextBuddy.saveContent();
 	}
 	
+	@Test
+	public void sortTest() {
+		TextBuddy.addText("AHHHHH");
+		//TextBuddy.sortContent();
+		
+		String expectedLine1 = "AHHHHH";
+	    String resultLine1 = TextBuddy.getLine(1);
+	    assertTrue(expectedLine1.equals(resultLine1));
+	    
+	    String expectedLine2 = "Bye Bye World!";
+	    String resultLine2 = TextBuddy.getLine(2);
+	    assertTrue(expectedLine2.equals(resultLine2));
+	    
+	    String expectedLine3 = "Hello World!";
+	    String resultLine3 = TextBuddy.getLine(3);
+	    assertTrue(expectedLine3.equals(resultLine3));
+	}
+	
 	@After
 	public void cleanUp(){
 		TextBuddy.textContent.clear();
