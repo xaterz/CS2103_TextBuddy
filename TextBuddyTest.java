@@ -3,6 +3,7 @@ package textbuddy.ce2;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.junit.After;
@@ -198,39 +199,39 @@ public class TextBuddyTest {
 		TextBuddy.addText("Welcome To My World!");
 		
 		//Test 1
-		//TextBuddy.searchContent("world");
+		ArrayList<String> searchResult = TextBuddy.searchContent("world");
 		int expectedNumberOfLines = 3;
-	    int actualNumberOfLines = TextBuddy.textContent.size();
+	    int actualNumberOfLines = searchResult.size();
 	    assertTrue(expectedNumberOfLines == actualNumberOfLines);
 		
 		String expectedLine1 = "Hello World!";
-	    String actualLine1 = TextBuddy.getLine(1);
+	    String actualLine1 = searchResult.get(0);
 	    assertTrue(expectedLine1.equals(actualLine1));
 	    
 	    String expectedLine2 = "Bye Bye World!";
-	    String actualLine2 = TextBuddy.getLine(2);
+	    String actualLine2 = searchResult.get(1);
 	    assertTrue(expectedLine2.equals(actualLine2));
 	    
 	    String expectedLine3 = "Welcome To My World!";
-	    String actualLine3 = TextBuddy.getLine(3);
+	    String actualLine3 = searchResult.get(2);
 	    assertTrue(expectedLine3.equals(actualLine3));
 	    
 		//Test 2
-		//TextBuddy.searchContent("welcome");
+	    ArrayList<String> searchResult2 = TextBuddy.searchContent("welcome");
 		expectedNumberOfLines = 3;
-	    actualNumberOfLines = TextBuddy.textContent.size();
+	    actualNumberOfLines = searchResult.size();
 	    assertTrue(expectedNumberOfLines == actualNumberOfLines);
 		
 		expectedLine1 = "Welcome To Heaven!";
-	    actualLine1 = TextBuddy.getLine(1);
+	    actualLine1 = searchResult.get(0);
 	    assertTrue(expectedLine1.equals(actualLine1));
 	    
 	    expectedLine2 = "Welcome To Hell!";
-	    actualLine2 = TextBuddy.getLine(2);
+	    actualLine2 = searchResult.get(1);
 	    assertTrue(expectedLine2.equals(actualLine2));
 	    
 	    expectedLine3 = "Welcome To My World!";
-	    actualLine3 = TextBuddy.getLine(3);
+	    actualLine3 = searchResult.get(2);
 	    assertTrue(expectedLine3.equals(actualLine3));
 	}
 	
