@@ -107,6 +107,7 @@ public class TextBuddy {
 	private static final String MESSAGE_SAVE_CONFIRM = "Save modified contents to %1$s? [y/n] >> ";
 	private static final String MESSAGE_SAVING_CONTENT = "Saving contents to %1$s... ";
 	private static final String MESSAGE_SAVE_CANCELLED = "Contents not saved.";
+	private static final String MESSAGE_CONTENT_SORTED = "Contents have been sorted!";
 	private static final String MESSAGE_INVALID_REPLY = "Error: Invalid input! Please type 'y' (yes) or 'n' (no) >> ";
 	private static final String MESSAGE_GODDBYE = "Exiting TextBuddy... Goodbye!";
 	
@@ -320,6 +321,7 @@ public class TextBuddy {
 	
 	static void sortContent(){
 		textContent.sort(compareLine);
+		showToUser(MESSAGE_CONTENT_SORTED);
 	}
 	
 	/**
