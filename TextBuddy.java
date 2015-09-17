@@ -85,51 +85,52 @@ public class TextBuddy {
 	 */
 	private static final String MAX_NUMBER_OF_LINES = "999999999";
 	
-	private static final String MESSAGE_WELCOME = "\nWelcome to TextBuddy!";
-	private static final String MESSAGE_EMPTY_COMMAND = "Error: Please enter a command!";
-	private static final String MESSAGE_EMPTY_ADD = "Error: There's nothing to add!";
-	private static final String MESSAGE_UNRECOGNISED_COMMAND = "Error: Unrecognised command '%1$s'.";
-	private static final String MESSAGE_TEXT_ADDED = "Added '%1$s' to content!";
-	private static final String MESSAGE_EMPTY_DISPLAY = "There's nothing to display!";
-	private static final String MESSAGE_DISPLAY_TEXT = "Displaying content:";
-	private static final String MESSAGE_LINE_NUMBER_EMPTY = "Error: Please indicate the line number!";
-	private static final String MESSAGE_LINE_NUMBER_INVALID = "Error: '%1$s' is not a valid line number!";
-	private static final String MESSAGE_LINE_NUMBER_OUT_OF_BOUND = "Error: Line %1$s is out of bound!";
-	private static final String MESSAGE_UPDATING_TEXT = "Updating line %1$s '%2$s'...";
-	private static final String MESSAGE_TEXT_UPDATED = "Line %1$s of content has been updated to '%2$s'";
-	private static final String MESSAGE_OPERATION_CANCELLED = "Operation cancelled.";
-	private static final String MESSAGE_ENTER_NEW_TEXT = "Please enter a new text (Enter nothing to cancel) >> ";
-	private static final String MESSAGE_TEXT_DELETED = "Deleted '%1$s' from content!";
-	private static final String MESSAGE_INSERTING_TEXT = "Inserting new text at line %1$s...";
-	private static final String MESSAGE_TEXT_INSERTED = "Inserted '%1$s' into content at line %2$s.";
-	private static final String MESSAGE_CLEAR_CONFIRM = "Are you sure you want to delete all contents? [y/n] >> ";
-	private static final String MESSAGE_ALL_CLEARED = "All contents deleted!";
-	private static final String MESSAGE_SAVE_CONFIRM = "Save modified contents to %1$s? [y/n] >> ";
+	private static final String INPUT_ARROW = ">> "; 
+	private static final String MESSAGE_WELCOME = "\nWelcome to TextBuddy!\n";
+	private static final String MESSAGE_EMPTY_COMMAND = "Error: Please enter a command!\n";
+	private static final String MESSAGE_EMPTY_ADD = "Error: There's nothing to add!\n";
+	private static final String MESSAGE_UNRECOGNISED_COMMAND = "Error: Unrecognised command '%1$s'.\n";
+	private static final String MESSAGE_TEXT_ADDED = "Added '%1$s' to content!\n";
+	private static final String MESSAGE_EMPTY_DISPLAY = "There's nothing to display!\n";
+	private static final String MESSAGE_DISPLAY_TEXT = "Displaying content:\n";
+	private static final String MESSAGE_LINE_NUMBER_EMPTY = "Error: Please indicate the line number!\n";
+	private static final String MESSAGE_LINE_NUMBER_INVALID = "Error: '%1$s' is not a valid line number!\n";
+	private static final String MESSAGE_LINE_NUMBER_OUT_OF_BOUND = "Error: Line %1$s is out of bound!\n";
+	private static final String MESSAGE_UPDATING_TEXT = "Updating line %1$s '%2$s'...\n";
+	private static final String MESSAGE_TEXT_UPDATED = "Line %1$s of content has been updated to '%2$s'\n";
+	private static final String MESSAGE_OPERATION_CANCELLED = "Operation cancelled.\n";
+	private static final String MESSAGE_ENTER_NEW_TEXT = "Please enter a new text (Enter nothing to cancel) ";
+	private static final String MESSAGE_TEXT_DELETED = "Deleted '%1$s' from content!\n";
+	private static final String MESSAGE_INSERTING_TEXT = "Inserting new text at line %1$s...\n";
+	private static final String MESSAGE_TEXT_INSERTED = "Inserted '%1$s' into content at line %2$s.\n";
+	private static final String MESSAGE_CLEAR_CONFIRM = "Are you sure you want to delete all contents? [y/n] ";
+	private static final String MESSAGE_ALL_CLEARED = "All contents deleted!\n";
+	private static final String MESSAGE_SAVE_CONFIRM = "Save modified contents to %1$s? [y/n] ";
 	private static final String MESSAGE_SAVING_CONTENT = "Saving contents to %1$s... ";
-	private static final String MESSAGE_SAVE_CANCELLED = "Contents not saved.";
-	private static final String MESSAGE_INVALID_REPLY = "Error: Invalid input! Please type 'y' (yes) or 'n' (no) >> ";
-	private static final String MESSAGE_CONTENT_SORTED = "Contents have been sorted!";
-	private static final String MESSAGE_NO_RESULT = "No results found for '%1$s'.";
-	private static final String MESSAGE_SHOWING_RESULT = "Showing search results for '%1$s'.";
-	private static final String MESSAGE_GODDBYE = "Exiting TextBuddy... Goodbye!";
+	private static final String MESSAGE_SAVE_CANCELLED = "Contents not saved.\n";
+	private static final String MESSAGE_INVALID_REPLY = "Error: Invalid input! Please type 'y' (yes) or 'n' (no) ";
+	private static final String MESSAGE_CONTENT_SORTED = "Contents have been sorted!\n";
+	private static final String MESSAGE_NO_RESULT = "No results found for '%1$s'.\n";
+	private static final String MESSAGE_SHOWING_RESULT = "Showing search results for '%1$s'.\n";
+	private static final String MESSAGE_GODDBYE = "Exiting TextBuddy... Goodbye!\n";
 	
 	public static void main(String[] fileName) {
 		showToUser(MESSAGE_WELCOME);
 		fileManager.setUpFile(fileName);
 		
 		while (true){
-			String command = readCommand();
+			String command = readInput();
 			processCommand(command);
 			executeCommand();
 		}
 	}
 
 	static void showToUser(String message){
-		System.out.println(message);
+		System.out.print(message);
 	}
 	
-	static String readCommand(){
-		System.out.print(">> ");
+	static String readInput(){
+		showToUser(INPUT_ARROW);
 		return reader.nextLine();
 	}
 	
@@ -207,7 +208,7 @@ public class TextBuddy {
 		} else {
 			showToUser(MESSAGE_DISPLAY_TEXT);
 			for (int i = 1; i < textContent.size()+1; i++) {
-				showToUser(i + "   " + getLine(i));
+				showToUser(i + "   " + getLine(i) + "\n");
 			}
 		}
 	}
@@ -286,9 +287,8 @@ public class TextBuddy {
 	}
 	
 	static String getNewText() {
-		System.out.print(MESSAGE_ENTER_NEW_TEXT);
-		String newText = reader.nextLine();
-		return newText;
+		showToUser(MESSAGE_ENTER_NEW_TEXT);
+		return readInput();
 	}
 	
 	static void deleteText(int lineNumber){
@@ -298,7 +298,7 @@ public class TextBuddy {
 	}
 	
 	static void clearContent() {
-		System.out.print(MESSAGE_CLEAR_CONFIRM);
+		showToUser(MESSAGE_CLEAR_CONFIRM);
 		if (isReplyYes()) {
 			textContent.clear();
 			showToUser(MESSAGE_ALL_CLEARED);
@@ -308,9 +308,9 @@ public class TextBuddy {
 	}
 	
 	static void saveContent(){
-		System.out.print(String.format(MESSAGE_SAVE_CONFIRM, fileManager.textFileName));
+		showToUser(String.format(MESSAGE_SAVE_CONFIRM, fileManager.textFileName));
 		if (isReplyYes()) {
-			System.out.print(String.format(MESSAGE_SAVING_CONTENT, fileManager.textFileName));
+			showToUser(String.format(MESSAGE_SAVING_CONTENT, fileManager.textFileName));
 			fileManager.writeContentToFile(fileManager.textFile);
 		} else {
 			showToUser(MESSAGE_SAVE_CANCELLED);
@@ -322,11 +322,11 @@ public class TextBuddy {
 	 * @return true if user replies yes.
 	 */
 	static boolean isReplyYes() {
-		String userReply = reader.nextLine();
+		String userReply = readInput();
 		while (!userReply.equalsIgnoreCase("y") && !userReply.equalsIgnoreCase("n")
 				&& !userReply.equalsIgnoreCase("yes") && !userReply.equalsIgnoreCase("no")) {
-			System.out.print(MESSAGE_INVALID_REPLY);
-			userReply = reader.nextLine();
+			showToUser(MESSAGE_INVALID_REPLY);
+			userReply = readInput();
 		}
 		return (userReply.equals("y") || userReply.equals("yes"));
 	}
@@ -345,11 +345,11 @@ public class TextBuddy {
 	}
 	
 	static ArrayList<String> searchContent(String word){
-		String optimisedWord = optimiseTextForSearch(word); //so that a valid search result will contain the full word and not just the character sequence
+		String optimisedWord = optimiseTextForSearch(word);
 		ArrayList<String> result = new ArrayList<String>();
 		for (int i = 1; i < textContent.size()+1; i++) {
 			String line = getLine(i);
-			String optimsedLine = optimiseTextForSearch(line); //so that the first and last word will be included in the search as well
+			String optimsedLine = optimiseTextForSearch(line);
 			if (optimsedLine.contains(optimisedWord)) {
 				result.add(line);
 			}
@@ -375,7 +375,7 @@ public class TextBuddy {
 			showToUser(String.format(MESSAGE_SHOWING_RESULT, word));
 			for (int i = 0; i < result.size(); i++) {
 				String line = result.get(i);
-				showToUser(i+1 + "   " + line);
+				showToUser(i+1 + "   " + line + "\n");
 			}
 		}
 	}
