@@ -3,7 +3,7 @@ package textbuddy.ce2;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-class ContentManager {
+public class ContentManager {
 	//This temporarily stores the modified text before it is being saved (written) to the text file.
 	ArrayList<String> content = new ArrayList<String>();
 	

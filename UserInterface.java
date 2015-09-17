@@ -3,7 +3,7 @@ package textbuddy.ce2;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class UserInterface {
+public class UserInterface {
 	Scanner reader = new Scanner(System.in);
 	
 	final String INPUT_ARROW = ">> "; 

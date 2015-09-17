@@ -1,5 +1,8 @@
 package textbuddy.ce2;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Logic {
 	/*
 	 * This limits the number of lines that can be stored in the text content.
@@ -11,7 +14,7 @@ public class Logic {
 		String[] commandParts = new String[2];
 		String[] splitCommand = command.split(" ", 2);
 		
-		commandParts[0] = splitCommand[0];
+		commandParts[0] = splitCommand[0].toLowerCase();
 		if (splitCommand.length < 2) {
 			commandParts[1] = "";
 		} else {
@@ -124,12 +127,14 @@ public class Logic {
 	 * @return true if user replies yes.
 	 */
 	boolean isReplyYes() {
-		String userReply = TextBuddy.ui.readInput();
-		while (!userReply.equalsIgnoreCase("y") && !userReply.equalsIgnoreCase("n")
-				&& !userReply.equalsIgnoreCase("yes") && !userReply.equalsIgnoreCase("no")) {
+		String userReply = TextBuddy.ui.readInput().toLowerCase();
+		ArrayList<String> acceptableReplies = new ArrayList<String>(Arrays.asList("y", "yes", "n", "no"));
+		
+		while (!acceptableReplies.contains(userReply)) {
 			TextBuddy.ui.showToUser(TextBuddy.ui.MESSAGE_INVALID_REPLY);
 			userReply = TextBuddy.ui.readInput();
 		}
+		
 		return (userReply.equals("y") || userReply.equals("yes"));
 	}
 }
