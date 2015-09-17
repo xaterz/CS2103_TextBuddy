@@ -2,7 +2,6 @@ package textbuddy.ce2;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Scanner;
 
 /**
  * TextBuddy is a program that manipulates text in a text file.
@@ -66,11 +65,12 @@ See you soon world!
  * @author Rufus
  */
 public class TextBuddy {
-	//This is used to read the command entered by the user.
-	public static Scanner reader = new Scanner(System.in);
 	
 	//This handles all the file-related operations. 
 	public static FileManager fileManager = new FileManager();
+	
+	//This handles all operations involving display and getting user input. 
+	public static UserInterface ui = new UserInterface();
 	
 	//This temporarily stores the modified text before it is being saved (written) to the text file.
 	public static ArrayList<String> textContent = new ArrayList<String>();
@@ -85,53 +85,16 @@ public class TextBuddy {
 	 */
 	private static final String MAX_NUMBER_OF_LINES = "999999999";
 	
-	private static final String INPUT_ARROW = ">> "; 
-	private static final String MESSAGE_WELCOME = "\nWelcome to TextBuddy!\n";
-	private static final String MESSAGE_EMPTY_COMMAND = "Error: Please enter a command!\n";
-	private static final String MESSAGE_EMPTY_ADD = "Error: There's nothing to add!\n";
-	private static final String MESSAGE_UNRECOGNISED_COMMAND = "Error: Unrecognised command '%1$s'.\n";
-	private static final String MESSAGE_TEXT_ADDED = "Added '%1$s' to content!\n";
-	private static final String MESSAGE_EMPTY_DISPLAY = "There's nothing to display!\n";
-	private static final String MESSAGE_DISPLAY_TEXT = "Displaying content:\n";
-	private static final String MESSAGE_LINE_NUMBER_EMPTY = "Error: Please indicate the line number!\n";
-	private static final String MESSAGE_LINE_NUMBER_INVALID = "Error: '%1$s' is not a valid line number!\n";
-	private static final String MESSAGE_LINE_NUMBER_OUT_OF_BOUND = "Error: Line %1$s is out of bound!\n";
-	private static final String MESSAGE_UPDATING_TEXT = "Updating line %1$s '%2$s'...\n";
-	private static final String MESSAGE_TEXT_UPDATED = "Line %1$s of content has been updated to '%2$s'\n";
-	private static final String MESSAGE_OPERATION_CANCELLED = "Operation cancelled.\n";
-	private static final String MESSAGE_ENTER_NEW_TEXT = "Please enter a new text (Enter nothing to cancel) ";
-	private static final String MESSAGE_TEXT_DELETED = "Deleted '%1$s' from content!\n";
-	private static final String MESSAGE_INSERTING_TEXT = "Inserting new text at line %1$s...\n";
-	private static final String MESSAGE_TEXT_INSERTED = "Inserted '%1$s' into content at line %2$s.\n";
-	private static final String MESSAGE_CLEAR_CONFIRM = "Are you sure you want to delete all contents? [y/n] ";
-	private static final String MESSAGE_ALL_CLEARED = "All contents deleted!\n";
-	private static final String MESSAGE_SAVE_CONFIRM = "Save modified contents to %1$s? [y/n] ";
-	private static final String MESSAGE_SAVING_CONTENT = "Saving contents to %1$s... ";
-	private static final String MESSAGE_SAVE_CANCELLED = "Contents not saved.\n";
-	private static final String MESSAGE_INVALID_REPLY = "Error: Invalid input! Please type 'y' (yes) or 'n' (no) ";
-	private static final String MESSAGE_CONTENT_SORTED = "Contents have been sorted!\n";
-	private static final String MESSAGE_NO_RESULT = "No results found for '%1$s'.\n";
-	private static final String MESSAGE_SHOWING_RESULT = "Showing search results for '%1$s'.\n";
-	private static final String MESSAGE_GODDBYE = "Exiting TextBuddy... Goodbye!\n";
 	
 	public static void main(String[] fileName) {
-		showToUser(MESSAGE_WELCOME);
+		ui.showToUser(ui.MESSAGE_WELCOME);
 		fileManager.setUpFile(fileName);
 		
 		while (true){
-			String command = readInput();
+			String command = ui.readInput();
 			processCommand(command);
 			executeCommand();
 		}
-	}
-
-	static void showToUser(String message){
-		System.out.print(message);
-	}
-	
-	static String readInput(){
-		showToUser(INPUT_ARROW);
-		return reader.nextLine();
 	}
 	
 	static void processCommand(String command){
@@ -146,18 +109,18 @@ public class TextBuddy {
 	
 	static void executeCommand(){
 		if (commandType.isEmpty()){
-			showToUser(MESSAGE_EMPTY_COMMAND);
+			ui.showToUser(ui.MESSAGE_EMPTY_COMMAND);
 		} else {
 			switch (commandType) {
 				case "add" :
 					if (commandContent.isEmpty()){
-						showToUser(MESSAGE_EMPTY_ADD);
+						ui.showToUser(ui.MESSAGE_EMPTY_ADD);
 					} else {
 						addText(commandContent);
 					}
 					break;
 				case "display" :
-					displayText();
+					ui.displayText();
 					break;
 				case "update" :
 					if (isValidLineNumber(commandContent)){
@@ -192,25 +155,14 @@ public class TextBuddy {
 				case "exit" :
 					exitProgram();
 				default:
-					showToUser(String.format(MESSAGE_UNRECOGNISED_COMMAND, commandType));
+					ui.showToUser(String.format(ui.MESSAGE_UNRECOGNISED_COMMAND, commandType));
 			}
 		}
 	}
 	
 	static void addText(String newText){
 		textContent.add(newText);
-		showToUser(String.format(MESSAGE_TEXT_ADDED, newText));
-	}
-	
-	static void displayText(){
-		if (textContent.isEmpty()) {
-			showToUser(MESSAGE_EMPTY_DISPLAY);
-		} else {
-			showToUser(MESSAGE_DISPLAY_TEXT);
-			for (int i = 1; i < textContent.size()+1; i++) {
-				showToUser(i + "   " + getLine(i) + "\n");
-			}
-		}
+		ui.showToUser(String.format(ui.MESSAGE_TEXT_ADDED, newText));
 	}
 	
 	/**
@@ -219,13 +171,13 @@ public class TextBuddy {
 	 */
 	static boolean isValidLineNumber(String commandContent){
 		if (commandContent.isEmpty()){
-			showToUser(MESSAGE_LINE_NUMBER_EMPTY);
+			ui.showToUser(ui.MESSAGE_LINE_NUMBER_EMPTY);
 			return false;
 		} else if (!IsPositiveInteger(commandContent)){
-			showToUser(String.format(MESSAGE_LINE_NUMBER_INVALID, commandContent));
+			ui.showToUser(String.format(ui.MESSAGE_LINE_NUMBER_INVALID, commandContent));
 			return false;
 		} else if (isLineNumberOutOfBound(commandContent)){
-			showToUser(String.format(MESSAGE_LINE_NUMBER_OUT_OF_BOUND, commandContent));
+			ui.showToUser(String.format(ui.MESSAGE_LINE_NUMBER_OUT_OF_BOUND, commandContent));
 			return false;
 		}
 		return true;
@@ -264,56 +216,51 @@ public class TextBuddy {
 	
 	static void updateText(int lineNumber){
 		int index = lineNumber - 1;
-		showToUser(String.format(MESSAGE_UPDATING_TEXT, lineNumber, getLine(lineNumber)));
-		String newText = getNewText();
+		ui.showToUser(String.format(ui.MESSAGE_UPDATING_TEXT, lineNumber, getLine(lineNumber)));
+		String newText = ui.getNewText();
 		if (newText.isEmpty()) {
-			showToUser(MESSAGE_OPERATION_CANCELLED);
+			ui.showToUser(ui.MESSAGE_OPERATION_CANCELLED);
 		} else {
 			textContent.set(index, newText);
-			showToUser(String.format(MESSAGE_TEXT_UPDATED, lineNumber, newText));
+			ui.showToUser(String.format(ui.MESSAGE_TEXT_UPDATED, lineNumber, newText));
 		}
 	}
 	
 	static void insertText(int lineNumber){
 		int index = lineNumber-1;
-		showToUser(String.format(MESSAGE_INSERTING_TEXT, lineNumber));
-		String newText = getNewText();
+		ui.showToUser(String.format(ui.MESSAGE_INSERTING_TEXT, lineNumber));
+		String newText = ui.getNewText();
 		if (newText.isEmpty()) {
-			showToUser(MESSAGE_OPERATION_CANCELLED);
+			ui.showToUser(ui.MESSAGE_OPERATION_CANCELLED);
 		} else {
 			textContent.add(index, newText);
-			showToUser(String.format(MESSAGE_TEXT_INSERTED, newText, lineNumber));
+			ui.showToUser(String.format(ui.MESSAGE_TEXT_INSERTED, newText, lineNumber));
 		}
-	}
-	
-	static String getNewText() {
-		showToUser(MESSAGE_ENTER_NEW_TEXT);
-		return readInput();
 	}
 	
 	static void deleteText(int lineNumber){
 		int index = lineNumber-1;
-		showToUser(String.format(MESSAGE_TEXT_DELETED, getLine(lineNumber)));
+		ui.showToUser(String.format(ui.MESSAGE_TEXT_DELETED, getLine(lineNumber)));
 		textContent.remove(index);
 	}
 	
 	static void clearContent() {
-		showToUser(MESSAGE_CLEAR_CONFIRM);
+		ui.showToUser(ui.MESSAGE_CLEAR_CONFIRM);
 		if (isReplyYes()) {
 			textContent.clear();
-			showToUser(MESSAGE_ALL_CLEARED);
+			ui.showToUser(ui.MESSAGE_ALL_CLEARED);
 		} else {
-			showToUser(MESSAGE_OPERATION_CANCELLED);
+			ui.showToUser(ui.MESSAGE_OPERATION_CANCELLED);
 		}
 	}
 	
 	static void saveContent(){
-		showToUser(String.format(MESSAGE_SAVE_CONFIRM, fileManager.textFileName));
+		ui.showToUser(String.format(ui.MESSAGE_SAVE_CONFIRM, fileManager.textFileName));
 		if (isReplyYes()) {
-			showToUser(String.format(MESSAGE_SAVING_CONTENT, fileManager.textFileName));
+			ui.showToUser(String.format(ui.MESSAGE_SAVING_CONTENT, fileManager.textFileName));
 			fileManager.writeContentToFile(fileManager.textFile);
 		} else {
-			showToUser(MESSAGE_SAVE_CANCELLED);
+			ui.showToUser(ui.MESSAGE_SAVE_CANCELLED);
 		}
 	}
 	
@@ -322,11 +269,11 @@ public class TextBuddy {
 	 * @return true if user replies yes.
 	 */
 	static boolean isReplyYes() {
-		String userReply = readInput();
+		String userReply = ui.readInput();
 		while (!userReply.equalsIgnoreCase("y") && !userReply.equalsIgnoreCase("n")
 				&& !userReply.equalsIgnoreCase("yes") && !userReply.equalsIgnoreCase("no")) {
-			showToUser(MESSAGE_INVALID_REPLY);
-			userReply = readInput();
+			ui.showToUser(ui.MESSAGE_INVALID_REPLY);
+			userReply = ui.readInput();
 		}
 		return (userReply.equals("y") || userReply.equals("yes"));
 	}
@@ -341,7 +288,7 @@ public class TextBuddy {
 		};	
 		
 		textContent.sort(compareLine);
-		showToUser(MESSAGE_CONTENT_SORTED);
+		ui.showToUser(ui.MESSAGE_CONTENT_SORTED);
 	}
 	
 	static ArrayList<String> searchContent(String word){
@@ -354,7 +301,7 @@ public class TextBuddy {
 				result.add(line);
 			}
 		}
-		showSearchResult(word, result);
+		ui.showSearchResult(word, result);
 		return result;
 	}
 	
@@ -368,21 +315,9 @@ public class TextBuddy {
 		return " " + text.toLowerCase().replaceAll("[^a-zA-Z0-9 ]+","") + " ";
 	}
 	
-	static void showSearchResult(String word, ArrayList<String> result){
-		if (result.isEmpty()) {
-			showToUser(String.format(MESSAGE_NO_RESULT, word));
-		} else {
-			showToUser(String.format(MESSAGE_SHOWING_RESULT, word));
-			for (int i = 0; i < result.size(); i++) {
-				String line = result.get(i);
-				showToUser(i+1 + "   " + line + "\n");
-			}
-		}
-	}
-	
 	static void exitProgram(){
 		saveContent(); //prompts user to save content to file before exiting
-		showToUser(MESSAGE_GODDBYE);
+		ui.showToUser(ui.MESSAGE_GOODBYE);
 		System.exit(0);
 	}
 }

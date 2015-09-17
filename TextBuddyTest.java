@@ -21,7 +21,7 @@ public class TextBuddyTest {
 	public void simulateUserInput(String fakeInput){
 		ByteArrayInputStream in = new ByteArrayInputStream(fakeInput.getBytes());
 		System.setIn(in);
-		TextBuddy.reader = new Scanner(System.in);
+		TextBuddy.ui.reader = new Scanner(System.in);
 	}
 	
 	@Test
@@ -30,7 +30,7 @@ public class TextBuddyTest {
 		
 		//Test 1
 		simulateUserInput("add Hello World");
-		String command = TextBuddy.readCommand();
+		String command = TextBuddy.ui.readInput();
 	    TextBuddy.processCommand(command);
 	    
 	    expectedType = "add";
@@ -42,7 +42,7 @@ public class TextBuddyTest {
 	    
 	    //Test 2
 	    simulateUserInput("display");
-		command = TextBuddy.readCommand();
+		command = TextBuddy.ui.readInput();
 	    TextBuddy.processCommand(command);
 	    
 	    expectedType = "display";

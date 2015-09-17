@@ -58,8 +58,8 @@ public class FileManager {
 	 */
 	private void getFileName(String[] fileName) {
 		if (fileName.length == 0) { //if user did not indicate a file name when opening Textbuddy
-			System.out.print("Please enter a file name >> ");
-			textFileName = TextBuddy.reader.nextLine();
+			System.out.print("Please enter a file name ");
+			textFileName = TextBuddy.ui.readInput();
 		} else {
 			for (int i = 0; i < fileName.length; i++) {
 				textFileName += fileName[i];
