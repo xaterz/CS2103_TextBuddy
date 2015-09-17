@@ -107,8 +107,10 @@ public class TextBuddy {
 	private static final String MESSAGE_SAVE_CONFIRM = "Save modified contents to %1$s? [y/n] >> ";
 	private static final String MESSAGE_SAVING_CONTENT = "Saving contents to %1$s... ";
 	private static final String MESSAGE_SAVE_CANCELLED = "Contents not saved.";
-	private static final String MESSAGE_CONTENT_SORTED = "Contents have been sorted!";
 	private static final String MESSAGE_INVALID_REPLY = "Error: Invalid input! Please type 'y' (yes) or 'n' (no) >> ";
+	private static final String MESSAGE_CONTENT_SORTED = "Contents have been sorted!";
+	private static final String MESSAGE_NO_RESULT = "No results found for '%1$s'.";
+	private static final String MESSAGE_SHOWING_RESULT = "Showing search results for '%1$s'.";
 	private static final String MESSAGE_GODDBYE = "Exiting TextBuddy... Goodbye!";
 	
 	public static void main(String[] fileName) {
@@ -312,6 +314,20 @@ public class TextBuddy {
 		}
 	}
 	
+	/**
+	 * This method checks whether the user replies yes or no to a yes/no question prompted by the program.
+	 * @return true if user replies yes.
+	 */
+	static boolean isReplyYes() {
+		String userReply = reader.nextLine();
+		while (!userReply.equalsIgnoreCase("y") && !userReply.equalsIgnoreCase("n")
+				&& !userReply.equalsIgnoreCase("yes") && !userReply.equalsIgnoreCase("no")) {
+			System.out.print(MESSAGE_INVALID_REPLY);
+			userReply = reader.nextLine();
+		}
+		return (userReply.equals("y") || userReply.equals("yes"));
+	}
+	
 	static Comparator<String> compareLine = new Comparator<String>() {
 		@Override
 		public int compare(String s1, String s2) {
@@ -330,23 +346,25 @@ public class TextBuddy {
 			String line = getLine(i);
 			if (line.toLowerCase().contains(word.toLowerCase())) {
 				result.add(line);
+			} else {
+				result.add("");
 			}
 		}
 		return result;
 	}
 	
-	/**
-	 * This method checks whether the user replies yes or no to a yes/no question prompted by the program.
-	 * @return true if user replies yes.
-	 */
-	static boolean isReplyYes() {
-		String userReply = reader.nextLine();
-		while (!userReply.equalsIgnoreCase("y") && !userReply.equalsIgnoreCase("n")
-				&& !userReply.equalsIgnoreCase("yes") && !userReply.equalsIgnoreCase("no")) {
-			System.out.print(MESSAGE_INVALID_REPLY);
-			userReply = reader.nextLine();
+	static void showSearchResult(ArrayList<String> result){
+		if (result.isEmpty()) {
+			showToUser(MESSAGE_NO_RESULT);
+		} else {
+			showToUser(MESSAGE_SHOWING_RESULT);
+			for (int i = 0; i < result.size(); i++) {
+				String line = result.get(i);
+				if (!line.isEmpty()) {
+					showToUser(i + "   " + line);
+				}
+			}
 		}
-		return (userReply.equals("y") || userReply.equals("yes"));
 	}
 	
 	static void exitProgram(){
