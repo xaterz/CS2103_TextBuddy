@@ -217,7 +217,7 @@ public class TextBuddyTest {
 	    assertTrue(expectedLine3.equals(actualLine3));
 	    
 		//Test 2
-	    ArrayList<String> searchResult2 = TextBuddy.searchContent("welcome");
+	    searchResult = TextBuddy.searchContent("welcome");
 		expectedNumberOfLines = 3;
 	    actualNumberOfLines = searchResult.size();
 	    assertTrue(expectedNumberOfLines == actualNumberOfLines);

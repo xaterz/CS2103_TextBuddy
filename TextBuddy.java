@@ -328,7 +328,7 @@ public class TextBuddy {
 		ArrayList<String> result = new ArrayList<String>();
 		for (int i = 1; i < textContent.size()+1; i++) {
 			String line = getLine(i);
-			if (line.contains(word)) {
+			if (line.toLowerCase().contains(word.toLowerCase())) {
 				result.add(line);
 			}
 		}
