@@ -69,22 +69,14 @@ public class TextBuddy {
 	//This handles all the file-related operations. 
 	public static FileManager fileManager = new FileManager();
 	
-	//This handles all operations involving display and getting user input. 
+	//This handles all operations involving getting user input and displaying output to user. 
 	public static UserInterface ui = new UserInterface();
+	
+	//This is the 'brain' of the program that decides what commands are to be executed.
+	public static Logic logic = new Logic();
 	
 	//This temporarily stores the modified text before it is being saved (written) to the text file.
 	public static ArrayList<String> textContent = new ArrayList<String>();
-	
-	//These store the user command after it has been split into 2 parts, 'type' and 'content'.
-	static String commandType = ""; 
-	static String commandContent = "";
-	
-	/*
-	 * This limits the number of lines that can be stored in the text content.
-	 * This is to avoid parsing very large line number string (which will generate an error).
-	 */
-	private static final String MAX_NUMBER_OF_LINES = "999999999";
-	
 	
 	public static void main(String[] fileName) {
 		ui.showToUser(ui.MESSAGE_WELCOME);
@@ -92,121 +84,14 @@ public class TextBuddy {
 		
 		while (true){
 			String command = ui.readInput();
-			processCommand(command);
-			executeCommand();
-		}
-	}
-	
-	static void processCommand(String command){
-		String[] commandParts = command.split(" ", 2);
-		commandType = commandParts[0];
-		if (commandParts.length > 1){
-			commandContent = commandParts[1];
-		} else {
-			commandContent= "";
-		}
-	}
-	
-	static void executeCommand(){
-		if (commandType.isEmpty()){
-			ui.showToUser(ui.MESSAGE_EMPTY_COMMAND);
-		} else {
-			switch (commandType) {
-				case "add" :
-					if (commandContent.isEmpty()){
-						ui.showToUser(ui.MESSAGE_EMPTY_ADD);
-					} else {
-						addText(commandContent);
-					}
-					break;
-				case "display" :
-					ui.displayText();
-					break;
-				case "update" :
-					if (isValidLineNumber(commandContent)){
-						int lineNumber = Integer.parseInt(commandContent);
-						updateText(lineNumber);
-					}
-					break;
-				case "insert" :
-					if (isValidLineNumber(commandContent)){
-						int lineNumber = Integer.parseInt(commandContent);
-						insertText(lineNumber);
-					}
-					break;
-				case "delete" :
-					if (isValidLineNumber(commandContent)){
-						int lineNumber = Integer.parseInt(commandContent);
-						deleteText(lineNumber);
-					}
-					break;
-				case "clear" :
-					clearContent();
-					break;
-				case "save" :
-					saveContent();
-					break;
-				case "sort" :
-					sortContent();
-					break;
-				case "search" :
-					searchContent(commandContent);
-					break;
-				case "exit" :
-					exitProgram();
-				default:
-					ui.showToUser(String.format(ui.MESSAGE_UNRECOGNISED_COMMAND, commandType));
-			}
+			String[] commandParts = logic.processCommand(command);
+			logic.executeCommand(commandParts);
 		}
 	}
 	
 	static void addText(String newText){
 		textContent.add(newText);
 		ui.showToUser(String.format(ui.MESSAGE_TEXT_ADDED, newText));
-	}
-	
-	/**
-	 * This method determines whether the user has indicated a valid line number in the command.
-	 * A line number is valid if it is a positive integer that is not out of bound.
-	 */
-	static boolean isValidLineNumber(String commandContent){
-		if (commandContent.isEmpty()){
-			ui.showToUser(ui.MESSAGE_LINE_NUMBER_EMPTY);
-			return false;
-		} else if (!IsPositiveInteger(commandContent)){
-			ui.showToUser(String.format(ui.MESSAGE_LINE_NUMBER_INVALID, commandContent));
-			return false;
-		} else if (isLineNumberOutOfBound(commandContent)){
-			ui.showToUser(String.format(ui.MESSAGE_LINE_NUMBER_OUT_OF_BOUND, commandContent));
-			return false;
-		}
-		return true;
-	}
-
-	static boolean IsPositiveInteger(String commandContent) {
-		char c = commandContent.charAt(0); //first character of command content
-		if (c == '0'){
-			return false;
-		}
-		for (int i = 0; i < commandContent.length(); i++) {
-			c = commandContent.charAt(i);
-			if (!Character.isDigit(c)){
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	static boolean isLineNumberOutOfBound(String lineNumberString) {
-		if (lineNumberString.length() > MAX_NUMBER_OF_LINES.length()){
-			return true;
-		}
-		int lineNumber = Integer.parseInt(lineNumberString);
-		int totalNumberOfLines = textContent.size();
-		if (lineNumber > totalNumberOfLines){
-			return true;
-		}
-		return false;
 	}
 	
 	static String getLine(int lineNumber){
@@ -246,7 +131,7 @@ public class TextBuddy {
 	
 	static void clearContent() {
 		ui.showToUser(ui.MESSAGE_CLEAR_CONFIRM);
-		if (isReplyYes()) {
+		if (ui.isReplyYes()) {
 			textContent.clear();
 			ui.showToUser(ui.MESSAGE_ALL_CLEARED);
 		} else {
@@ -256,26 +141,12 @@ public class TextBuddy {
 	
 	static void saveContent(){
 		ui.showToUser(String.format(ui.MESSAGE_SAVE_CONFIRM, fileManager.textFileName));
-		if (isReplyYes()) {
+		if (ui.isReplyYes()) {
 			ui.showToUser(String.format(ui.MESSAGE_SAVING_CONTENT, fileManager.textFileName));
 			fileManager.writeContentToFile(fileManager.textFile);
 		} else {
 			ui.showToUser(ui.MESSAGE_SAVE_CANCELLED);
 		}
-	}
-	
-	/**
-	 * This method checks whether the user replies yes or no to a yes/no question prompted by the program.
-	 * @return true if user replies yes.
-	 */
-	static boolean isReplyYes() {
-		String userReply = ui.readInput();
-		while (!userReply.equalsIgnoreCase("y") && !userReply.equalsIgnoreCase("n")
-				&& !userReply.equalsIgnoreCase("yes") && !userReply.equalsIgnoreCase("no")) {
-			ui.showToUser(ui.MESSAGE_INVALID_REPLY);
-			userReply = ui.readInput();
-		}
-		return (userReply.equals("y") || userReply.equals("yes"));
 	}
 	
 	static void sortContent(){

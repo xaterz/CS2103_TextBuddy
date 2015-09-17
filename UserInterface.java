@@ -61,6 +61,20 @@ public class UserInterface {
 		return readInput();
 	}
 	
+	/**
+	 * This method checks whether the user replies yes or no to a yes/no question prompted by the program.
+	 * @return true if user replies yes.
+	 */
+	public boolean isReplyYes() {
+		String userReply = readInput();
+		while (!userReply.equalsIgnoreCase("y") && !userReply.equalsIgnoreCase("n")
+				&& !userReply.equalsIgnoreCase("yes") && !userReply.equalsIgnoreCase("no")) {
+			showToUser(MESSAGE_INVALID_REPLY);
+			userReply = readInput();
+		}
+		return (userReply.equals("y") || userReply.equals("yes"));
+	}
+	
 	public void showSearchResult(String word, ArrayList<String> result){
 		if (result.isEmpty()) {
 			showToUser(String.format(MESSAGE_NO_RESULT, word));

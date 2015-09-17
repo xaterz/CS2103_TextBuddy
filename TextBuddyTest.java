@@ -31,24 +31,24 @@ public class TextBuddyTest {
 		//Test 1
 		simulateUserInput("add Hello World");
 		String command = TextBuddy.ui.readInput();
-	    TextBuddy.processCommand(command);
+	    String[] commandParts = TextBuddy.logic.processCommand(command);
 	    
 	    expectedType = "add";
 	    expectedContent = "Hello World";
-	    actualType = TextBuddy.commandType;
-	    actualContent = TextBuddy.commandContent;
+	    actualType = commandParts[0];
+	    actualContent = commandParts[1];
 	    assertTrue(expectedType.equals(actualType));
 	    assertTrue(expectedContent.equals(actualContent));
 	    
 	    //Test 2
 	    simulateUserInput("display");
 		command = TextBuddy.ui.readInput();
-	    TextBuddy.processCommand(command);
+		commandParts = TextBuddy.logic.processCommand(command);
 	    
 	    expectedType = "display";
 	    expectedContent = "";
-	    actualType = TextBuddy.commandType;
-	    actualContent = TextBuddy.commandContent;
+	    actualType = commandParts[0];
+	    actualContent = commandParts[1];
 	    assertTrue(expectedType.equals(actualType));
 	    assertTrue(expectedContent.equals(actualContent));
 	}
@@ -76,16 +76,14 @@ public class TextBuddyTest {
 	
 	@Test
 	public void executeTest() {
-		TextBuddy.commandType = "add";
-		TextBuddy.commandContent = "AHHHHHHH";
-		TextBuddy.executeCommand();
+		String[] commandParts = {"add", "AHHHHHHH"};
+		TextBuddy.logic.executeCommand(commandParts);
 		String expectedLine3 = "AHHHHHHH";
 	    String actualLine3 = TextBuddy.getLine(3);
 	    assertTrue(expectedLine3.equals(actualLine3));
 	    
-	    TextBuddy.commandType = "delete";
-		TextBuddy.commandContent = "2";
-		TextBuddy.executeCommand();
+	    String[] commandParts2 = {"delete", "2"};
+		TextBuddy.logic.executeCommand(commandParts2);
 		String expectedLine2 = "AHHHHHHH";
 	    String actualLine2 = TextBuddy.getLine(2);
 	    assertTrue(expectedLine2.equals(actualLine2));
@@ -133,12 +131,12 @@ public class TextBuddyTest {
 	
 	@Test
 	public void validLineTest() {
-		assertFalse(TextBuddy.isValidLineNumber(""));
-		assertFalse(TextBuddy.isValidLineNumber("0"));
-		assertFalse(TextBuddy.isValidLineNumber("-123"));
-		assertFalse(TextBuddy.isValidLineNumber("sdgs"));
-		assertFalse(TextBuddy.isValidLineNumber("3"));
-		assertTrue(TextBuddy.isValidLineNumber("2"));
+		assertFalse(TextBuddy.logic.isValidLineNumber(""));
+		assertFalse(TextBuddy.logic.isValidLineNumber("0"));
+		assertFalse(TextBuddy.logic.isValidLineNumber("-123"));
+		assertFalse(TextBuddy.logic.isValidLineNumber("sdgs"));
+		assertFalse(TextBuddy.logic.isValidLineNumber("3"));
+		assertTrue(TextBuddy.logic.isValidLineNumber("2"));
 	}
 	
 	@Test
@@ -230,8 +228,6 @@ public class TextBuddyTest {
 	@After
 	public void cleanUp(){
 		TextBuddy.textContent.clear();
-		TextBuddy.commandType = "";
-		TextBuddy.commandContent = "";
 		System.setIn(System.in);
 	}
 }
