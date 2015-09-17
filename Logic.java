@@ -8,7 +8,11 @@ public class Logic {
 	 * This limits the number of lines that can be stored in the text content.
 	 * This is to avoid parsing very large line number string (which will generate an error).
 	 */
-	private static final String MAX_NUMBER_OF_LINES = "999999999";
+	private final String MAX_NUMBER_OF_LINES = "999999999";
+	
+	//This is used to check the user's reply to a [y/n] prompt
+	private final ArrayList<String> acceptableReplies = new ArrayList<String>(Arrays.asList("y", "yes", "n", "no"));
+	
 	
 	String[] processCommand(String command){
 		String[] commandParts = new String[2];
@@ -128,7 +132,6 @@ public class Logic {
 	 */
 	boolean isReplyYes() {
 		String userReply = TextBuddy.ui.readInput().toLowerCase();
-		ArrayList<String> acceptableReplies = new ArrayList<String>(Arrays.asList("y", "yes", "n", "no"));
 		
 		while (!acceptableReplies.contains(userReply)) {
 			TextBuddy.ui.showToUser(TextBuddy.ui.MESSAGE_INVALID_REPLY);
