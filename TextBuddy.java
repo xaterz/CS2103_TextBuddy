@@ -344,11 +344,11 @@ public class TextBuddy {
 	}
 	
 	static ArrayList<String> searchContent(String word){
-		word = " " + word + " "; //so that a valid search result will contain the full word and not just the character sequence
+		String optimisedWord = optimiseTextForSearch(word); //so that a valid search result will contain the full word and not just the character sequence
 		ArrayList<String> result = new ArrayList<String>();
 		for (int i = 1; i < textContent.size()+1; i++) {
-			String line = " " + getLine(i) + " "; //so that the first and last word will be included in the search as well
-			if (line.toLowerCase().contains(word.toLowerCase())) {
+			String optimsedLine = optimiseTextForSearch(getLine(i)); //so that the first and last word will be included in the search as well
+			if (optimsedLine.contains(optimisedWord)) {
 				result.add(getLine(i));
 			}
 		}
@@ -356,8 +356,11 @@ public class TextBuddy {
 		return result;
 	}
 	
+	static String optimiseTextForSearch(String text){
+		return " " + text.toLowerCase().replaceAll("[^a-zA-Z0-9 ]+","") + " ";
+	}
+	
 	static void showSearchResult(String word, ArrayList<String> result){
-		word = word.substring(1, word.length()-1);
 		if (result.isEmpty()) {
 			showToUser(String.format(MESSAGE_NO_RESULT, word));
 		} else {
