@@ -324,6 +324,17 @@ public class TextBuddy {
 		showToUser(MESSAGE_CONTENT_SORTED);
 	}
 	
+	static ArrayList<String> searchContent(String word){
+		ArrayList<String> result = new ArrayList<String>();
+		for (int i = 1; i < textContent.size()+1; i++) {
+			String line = getLine(i);
+			if (line.contains(word)) {
+				result.add(line);
+			}
+		}
+		return result;
+	}
+	
 	/**
 	 * This method checks whether the user replies yes or no to a yes/no question prompted by the program.
 	 * @return true if user replies yes.
