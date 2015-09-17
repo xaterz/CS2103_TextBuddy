@@ -1,14 +1,13 @@
 package textbuddy.ce2;
 
 public class Logic {
-	
 	/*
 	 * This limits the number of lines that can be stored in the text content.
 	 * This is to avoid parsing very large line number string (which will generate an error).
 	 */
 	private static final String MAX_NUMBER_OF_LINES = "999999999";
 	
-	public String[] processCommand(String command){
+	String[] processCommand(String command){
 		String[] commandParts = new String[2];
 		String[] splitCommand = command.split(" ", 2);
 		
@@ -21,7 +20,7 @@ public class Logic {
 		return commandParts;
 	}
 	
-	public void executeCommand(String[] commandParts){
+	void executeCommand(String[] commandParts){
 		String commandType = commandParts[0];
 		String commandContent = commandParts[1];
 		if (commandType.isEmpty()){
@@ -32,7 +31,7 @@ public class Logic {
 					if (commandContent.isEmpty()){
 						TextBuddy.ui.showToUser(TextBuddy.ui.MESSAGE_EMPTY_ADD);
 					} else {
-						TextBuddy.addText(commandContent);
+						TextBuddy.conMan.addText(commandContent);
 					}
 					break;
 				case "display" :
@@ -41,32 +40,32 @@ public class Logic {
 				case "update" :
 					if (isValidLineNumber(commandContent)){
 						int lineNumber = Integer.parseInt(commandContent);
-						TextBuddy.updateText(lineNumber);
+						TextBuddy.conMan.updateText(lineNumber);
 					}
 					break;
 				case "insert" :
 					if (isValidLineNumber(commandContent)){
 						int lineNumber = Integer.parseInt(commandContent);
-						TextBuddy.insertText(lineNumber);
+						TextBuddy.conMan.insertText(lineNumber);
 					}
 					break;
 				case "delete" :
 					if (isValidLineNumber(commandContent)){
 						int lineNumber = Integer.parseInt(commandContent);
-						TextBuddy.deleteText(lineNumber);
+						TextBuddy.conMan.deleteText(lineNumber);
 					}
 					break;
 				case "clear" :
-					TextBuddy.clearContent();
+					TextBuddy.conMan.clearContent();
 					break;
 				case "save" :
 					TextBuddy.saveContent();
 					break;
 				case "sort" :
-					TextBuddy.sortContent();
+					TextBuddy.conMan.sortContent();
 					break;
 				case "search" :
-					TextBuddy.searchContent(commandContent);
+					TextBuddy.conMan.searchContent(commandContent);
 					break;
 				case "exit" :
 					TextBuddy.exitProgram();
@@ -80,7 +79,7 @@ public class Logic {
 	 * This method determines whether the user has indicated a valid line number in the command.
 	 * A line number is valid if it is a positive integer that is not out of bound.
 	 */
-	public boolean isValidLineNumber(String commandContent){
+	boolean isValidLineNumber(String commandContent){
 		if (commandContent.isEmpty()){
 			TextBuddy.ui.showToUser(TextBuddy.ui.MESSAGE_LINE_NUMBER_EMPTY);
 			return false;
@@ -94,7 +93,7 @@ public class Logic {
 		return true;
 	}
 
-	public boolean IsPositiveInteger(String commandContent) {
+	boolean IsPositiveInteger(String commandContent) {
 		char c = commandContent.charAt(0); //first character of command content
 		if (c == '0'){
 			return false;
@@ -108,16 +107,29 @@ public class Logic {
 		return true;
 	}
 	
-	public boolean isLineNumberOutOfBound(String lineNumberString) {
+	boolean isLineNumberOutOfBound(String lineNumberString) {
 		if (lineNumberString.length() > MAX_NUMBER_OF_LINES.length()){
 			return true;
 		}
 		int lineNumber = Integer.parseInt(lineNumberString);
-		int totalNumberOfLines = TextBuddy.textContent.size();
+		int totalNumberOfLines = TextBuddy.conMan.content.size();
 		if (lineNumber > totalNumberOfLines){
 			return true;
 		}
 		return false;
 	}
 	
+	/**
+	 * This method checks whether the user replies yes or no to a yes/no question prompted by the program.
+	 * @return true if user replies yes.
+	 */
+	boolean isReplyYes() {
+		String userReply = TextBuddy.ui.readInput();
+		while (!userReply.equalsIgnoreCase("y") && !userReply.equalsIgnoreCase("n")
+				&& !userReply.equalsIgnoreCase("yes") && !userReply.equalsIgnoreCase("no")) {
+			TextBuddy.ui.showToUser(TextBuddy.ui.MESSAGE_INVALID_REPLY);
+			userReply = TextBuddy.ui.readInput();
+		}
+		return (userReply.equals("y") || userReply.equals("yes"));
+	}
 }

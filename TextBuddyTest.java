@@ -11,14 +11,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TextBuddyTest {
-	
 	@Before
 	public void setUp(){
-		TextBuddy.textContent.add("Hello World!");
-		TextBuddy.textContent.add("Bye Bye World!");
+		TextBuddy.conMan.content.add("Hello World!");
+		TextBuddy.conMan.content.add("Bye Bye World!");
 	}
 	
-	public void simulateUserInput(String fakeInput){
+	void simulateUserInput(String fakeInput){
 		ByteArrayInputStream in = new ByteArrayInputStream(fakeInput.getBytes());
 		System.setIn(in);
 		TextBuddy.ui.reader = new Scanner(System.in);
@@ -55,22 +54,22 @@ public class TextBuddyTest {
 	
 	@Test
 	public void addTest() {
-	    TextBuddy.addText("It's A Small World");    
+	    TextBuddy.conMan.addText("It's A Small World");    
 	    
 	    String expectedLine3 = "It's A Small World";
-	    String actualLine3 = TextBuddy.getLine(3);
+	    String actualLine3 = TextBuddy.conMan.getLine(3);
 	    //System.out.println("Expected: " + expectedLine3 + " | actual: " + actualLine3);
 	    assertTrue(expectedLine3.equals(actualLine3));
 	}
 	
 	@Test
 	public void deleteTest() {
-		TextBuddy.addText("Anyone There?");
-	    TextBuddy.deleteText(1);
-	    TextBuddy.deleteText(1);
+		TextBuddy.conMan.addText("Anyone There?");
+	    TextBuddy.conMan.deleteText(1);
+	    TextBuddy.conMan.deleteText(1);
 	    
 	    String expectedLine1 = "Anyone There?";
-	    String actualLine1 = TextBuddy.getLine(1);
+	    String actualLine1 = TextBuddy.conMan.getLine(1);
 	    assertTrue(expectedLine1.equals(actualLine1));
 	}
 	
@@ -79,53 +78,53 @@ public class TextBuddyTest {
 		String[] commandParts = {"add", "AHHHHHHH"};
 		TextBuddy.logic.executeCommand(commandParts);
 		String expectedLine3 = "AHHHHHHH";
-	    String actualLine3 = TextBuddy.getLine(3);
+	    String actualLine3 = TextBuddy.conMan.getLine(3);
 	    assertTrue(expectedLine3.equals(actualLine3));
 	    
 	    String[] commandParts2 = {"delete", "2"};
 		TextBuddy.logic.executeCommand(commandParts2);
 		String expectedLine2 = "AHHHHHHH";
-	    String actualLine2 = TextBuddy.getLine(2);
+	    String actualLine2 = TextBuddy.conMan.getLine(2);
 	    assertTrue(expectedLine2.equals(actualLine2));
 	}
 	
 	@Test
 	public void updateTest() {
 		simulateUserInput("This is Sparta!");
-		TextBuddy.updateText(1);
+		TextBuddy.conMan.updateText(1);
 
 		int expectedNumberOfLines = 2;
-	    int actualNumberOfLines = TextBuddy.textContent.size();
+	    int actualNumberOfLines = TextBuddy.conMan.content.size();
 	    assertTrue(expectedNumberOfLines == actualNumberOfLines);		
 		
 	    String expectedLine1 = "This is Sparta!";
-	    String actualLine1 = TextBuddy.getLine(1);
+	    String actualLine1 = TextBuddy.conMan.getLine(1);
 	    assertTrue(expectedLine1.equals(actualLine1));
 	    
 	    String expectedLine2 = "Bye Bye World!";
-	    String actualLine2 = TextBuddy.getLine(2);
+	    String actualLine2 = TextBuddy.conMan.getLine(2);
 	    assertTrue(expectedLine2.equals(actualLine2));
 	}
 	
 	@Test
 	public void insertTest() {
 		simulateUserInput("This is Sparta!");
-		TextBuddy.insertText(1);
+		TextBuddy.conMan.insertText(1);
 
 		int expectedNumberOfLines = 3;
-	    int actualNumberOfLines = TextBuddy.textContent.size();
+	    int actualNumberOfLines = TextBuddy.conMan.content.size();
 	    assertTrue(expectedNumberOfLines == actualNumberOfLines);		
 		
 	    String expectedLine1 = "This is Sparta!";
-	    String actualLine1 = TextBuddy.getLine(1);
+	    String actualLine1 = TextBuddy.conMan.getLine(1);
 	    assertTrue(expectedLine1.equals(actualLine1));
 	    
 	    String expectedLine2 = "Hello World!";
-	    String actualLine2 = TextBuddy.getLine(2);
+	    String actualLine2 = TextBuddy.conMan.getLine(2);
 	    assertTrue(expectedLine2.equals(actualLine2));
 	    
 	    String expectedLine3 = "Bye Bye World!";
-	    String actualLine3 = TextBuddy.getLine(3);
+	    String actualLine3 = TextBuddy.conMan.getLine(3);
 	    assertTrue(expectedLine3.equals(actualLine3));
 	}
 	
@@ -142,62 +141,62 @@ public class TextBuddyTest {
 	@Test
 	public void clearTest() {
 		simulateUserInput("y");
-		TextBuddy.clearContent();
+		TextBuddy.conMan.clearContent();
 		
-	    assertTrue(TextBuddy.textContent.isEmpty());
+	    assertTrue(TextBuddy.conMan.content.isEmpty());
 	}
 
 	@Test
 	public void saveTest() {
 		String[] fileName = {"junitTest"};
-		TextBuddy.fileManager.setUpFile(fileName);
+		TextBuddy.fileMan.setUpFile(fileName);
 		simulateUserInput("y"); //save before exit
 		TextBuddy.saveContent();
 		simulateUserInput("y");
-		TextBuddy.clearContent();
+		TextBuddy.conMan.clearContent();
 		
-		TextBuddy.fileManager.loadContentFromFile("junitTest.txt");
+		TextBuddy.fileMan.loadContentFromFile("junitTest.txt");
 	    String expectedLine1 = "Hello World!";
-	    String actualLine1 = TextBuddy.getLine(1);
+	    String actualLine1 = TextBuddy.conMan.getLine(1);
 	    assertTrue(expectedLine1.equals(actualLine1));
 	    
 	    String expectedLine2 = "Bye Bye World!";
-	    String actualLine2 = TextBuddy.getLine(2);
+	    String actualLine2 = TextBuddy.conMan.getLine(2);
 	    assertTrue(expectedLine2.equals(actualLine2));
 	    
 	    //clean up junitTest.txt
 	    simulateUserInput("y");
-	    TextBuddy.clearContent();
+	    TextBuddy.conMan.clearContent();
 		simulateUserInput("y");
 		TextBuddy.saveContent();
 	}
 	
 	@Test
 	public void sortTest() {
-		TextBuddy.addText("AHHHHH");
-		TextBuddy.sortContent();
+		TextBuddy.conMan.addText("AHHHHH");
+		TextBuddy.conMan.sortContent();
 		
 		String expectedLine1 = "AHHHHH";
-	    String actualLine1 = TextBuddy.getLine(1);
+	    String actualLine1 = TextBuddy.conMan.getLine(1);
 	    assertTrue(expectedLine1.equals(actualLine1));
 	    
 	    String expectedLine2 = "Bye Bye World!";
-	    String actualLine2 = TextBuddy.getLine(2);
+	    String actualLine2 = TextBuddy.conMan.getLine(2);
 	    assertTrue(expectedLine2.equals(actualLine2));
 	    
 	    String expectedLine3 = "Hello World!";
-	    String actualLine3 = TextBuddy.getLine(3);
+	    String actualLine3 = TextBuddy.conMan.getLine(3);
 	    assertTrue(expectedLine3.equals(actualLine3));
 	}
 	
 	@Test
 	public void searchTest() {
-		TextBuddy.addText("Welcome To Heaven!");
-		TextBuddy.addText("Welcome To Hell!");
-		TextBuddy.addText("Welcome To My World!");
+		TextBuddy.conMan.addText("Welcome To Heaven!");
+		TextBuddy.conMan.addText("Welcome To Hell!");
+		TextBuddy.conMan.addText("Welcome To My World!");
 		
 		//Test 1
-		ArrayList<String> searchResult = TextBuddy.searchContent("world");
+		ArrayList<String> searchResult = TextBuddy.conMan.searchContent("world");
 		int expectedNumberOfLines = 3;
 	    int actualNumberOfLines = searchResult.size();
 	    assertTrue(expectedNumberOfLines == actualNumberOfLines);
@@ -215,7 +214,7 @@ public class TextBuddyTest {
 	    assertTrue(expectedLine3.equals(actualLine3));
 	    
 		//Test 2
-	    searchResult = TextBuddy.searchContent("hell");
+	    searchResult = TextBuddy.conMan.searchContent("hell");
 		expectedNumberOfLines = 1;
 	    actualNumberOfLines = searchResult.size();
 	    assertTrue(expectedNumberOfLines == actualNumberOfLines);
@@ -227,7 +226,7 @@ public class TextBuddyTest {
 	
 	@After
 	public void cleanUp(){
-		TextBuddy.textContent.clear();
+		TextBuddy.conMan.content.clear();
 		System.setIn(System.in);
 	}
 }

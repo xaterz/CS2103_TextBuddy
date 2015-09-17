@@ -14,18 +14,19 @@ import java.io.IOException;
  * @author Rufus
  */
 public class FileManager {
+	
 	//This is the name of the text file as entered by the user.
-	public String textFileName = "";
+	String textFileName = "";
 	
 	//This is the text file that will be initialized with the name given by the user.
-	public File textFile;
+	File textFile;
 	
 	/**
 	 * This method takes in a file name and creates a new text file of that name.
 	 * If a file of the same name exists, it will loads the text contents from that file into TextBuddy. 
 	 * @param name of the file as entered by the user.
 	 */
-	public void setUpFile(String[] fileName) {
+	void setUpFile(String[] fileName) {
 		getFileName(fileName);
 		
 		//Append '.txt' extension if absent 
@@ -56,7 +57,7 @@ public class FileManager {
 	 * via the command shell, or when the program prompts the user to enter a file name when it first starts up.
 	 * @param fileName that was entered by the user when TextBuddy is opened
 	 */
-	private void getFileName(String[] fileName) {
+	void getFileName(String[] fileName) {
 		if (fileName.length == 0) { //if user did not indicate a file name when opening Textbuddy
 			System.out.print("Please enter a file name ");
 			textFileName = TextBuddy.ui.readInput();
@@ -67,17 +68,17 @@ public class FileManager {
 		}
 	}
 	
-	private boolean hasFileInDirectory(File file) {
+	boolean hasFileInDirectory(File file) {
 		return (file.exists() && !file.isDirectory());
 	}
 	
-	public void loadContentFromFile(String fileName) {
+	void loadContentFromFile(String fileName) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(fileName));
 			String line;
 		    try {
 				while ((line = reader.readLine()) != null) {
-					TextBuddy.textContent.add(line);
+					TextBuddy.conMan.content.add(line);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -92,11 +93,11 @@ public class FileManager {
 		} 
 	}
 	
-	public void writeContentToFile(File file) {
+	void writeContentToFile(File file) {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
-			for (int i = 0; i < TextBuddy.textContent.size(); i++) {
-				writer.write(TextBuddy.textContent.get(i) + "\n");
+			for (int i = 0; i < TextBuddy.conMan.content.size(); i++) {
+				writer.write(TextBuddy.conMan.content.get(i) + "\n");
 			}
 			writer.close();
 			System.out.println("Done!");

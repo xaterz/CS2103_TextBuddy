@@ -1,8 +1,5 @@
 package textbuddy.ce2;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-
 /**
  * TextBuddy is a program that manipulates text in a text file.
  * User can create a new text file or read/update an existing text file.
@@ -66,21 +63,22 @@ See you soon world!
  */
 public class TextBuddy {
 	
+	//This is used to manipulate and store content within TextBuddy.
+	public static ContentManager conMan = new ContentManager();
+	
 	//This handles all the file-related operations. 
-	public static FileManager fileManager = new FileManager();
+	public static FileManager fileMan = new FileManager();
+	
+	//This is the 'brain' of the program that processes user input and makes decision for the program.
+	public static Logic logic = new Logic();
 	
 	//This handles all operations involving getting user input and displaying output to user. 
 	public static UserInterface ui = new UserInterface();
 	
-	//This is the 'brain' of the program that decides what commands are to be executed.
-	public static Logic logic = new Logic();
-	
-	//This temporarily stores the modified text before it is being saved (written) to the text file.
-	public static ArrayList<String> textContent = new ArrayList<String>();
 	
 	public static void main(String[] fileName) {
 		ui.showToUser(ui.MESSAGE_WELCOME);
-		fileManager.setUpFile(fileName);
+		fileMan.setUpFile(fileName);
 		
 		while (true){
 			String command = ui.readInput();
@@ -89,101 +87,14 @@ public class TextBuddy {
 		}
 	}
 	
-	static void addText(String newText){
-		textContent.add(newText);
-		ui.showToUser(String.format(ui.MESSAGE_TEXT_ADDED, newText));
-	}
-	
-	static String getLine(int lineNumber){
-		int index = lineNumber - 1;
-		return textContent.get(index);
-	}
-	
-	static void updateText(int lineNumber){
-		int index = lineNumber - 1;
-		ui.showToUser(String.format(ui.MESSAGE_UPDATING_TEXT, lineNumber, getLine(lineNumber)));
-		String newText = ui.getNewText();
-		if (newText.isEmpty()) {
-			ui.showToUser(ui.MESSAGE_OPERATION_CANCELLED);
-		} else {
-			textContent.set(index, newText);
-			ui.showToUser(String.format(ui.MESSAGE_TEXT_UPDATED, lineNumber, newText));
-		}
-	}
-	
-	static void insertText(int lineNumber){
-		int index = lineNumber-1;
-		ui.showToUser(String.format(ui.MESSAGE_INSERTING_TEXT, lineNumber));
-		String newText = ui.getNewText();
-		if (newText.isEmpty()) {
-			ui.showToUser(ui.MESSAGE_OPERATION_CANCELLED);
-		} else {
-			textContent.add(index, newText);
-			ui.showToUser(String.format(ui.MESSAGE_TEXT_INSERTED, newText, lineNumber));
-		}
-	}
-	
-	static void deleteText(int lineNumber){
-		int index = lineNumber-1;
-		ui.showToUser(String.format(ui.MESSAGE_TEXT_DELETED, getLine(lineNumber)));
-		textContent.remove(index);
-	}
-	
-	static void clearContent() {
-		ui.showToUser(ui.MESSAGE_CLEAR_CONFIRM);
-		if (ui.isReplyYes()) {
-			textContent.clear();
-			ui.showToUser(ui.MESSAGE_ALL_CLEARED);
-		} else {
-			ui.showToUser(ui.MESSAGE_OPERATION_CANCELLED);
-		}
-	}
-	
 	static void saveContent(){
-		ui.showToUser(String.format(ui.MESSAGE_SAVE_CONFIRM, fileManager.textFileName));
-		if (ui.isReplyYes()) {
-			ui.showToUser(String.format(ui.MESSAGE_SAVING_CONTENT, fileManager.textFileName));
-			fileManager.writeContentToFile(fileManager.textFile);
+		ui.showToUser(String.format(ui.MESSAGE_SAVE_CONFIRM, fileMan.textFileName));
+		if (logic.isReplyYes()) {
+			ui.showToUser(String.format(ui.MESSAGE_SAVING_CONTENT, fileMan.textFileName));
+			fileMan.writeContentToFile(fileMan.textFile);
 		} else {
 			ui.showToUser(ui.MESSAGE_SAVE_CANCELLED);
 		}
-	}
-	
-	static void sortContent(){
-		//This comparator ensures that content is sorted alphabetically.
-		Comparator<String> compareLine = new Comparator<String>() {
-			@Override
-			public int compare(String s1, String s2) {
-				return s1.compareTo(s2);
-			}
-		};	
-		
-		textContent.sort(compareLine);
-		ui.showToUser(ui.MESSAGE_CONTENT_SORTED);
-	}
-	
-	static ArrayList<String> searchContent(String word){
-		String optimisedWord = optimiseTextForSearch(word);
-		ArrayList<String> result = new ArrayList<String>();
-		for (int i = 1; i < textContent.size()+1; i++) {
-			String line = getLine(i);
-			String optimsedLine = optimiseTextForSearch(line);
-			if (optimsedLine.contains(optimisedWord)) {
-				result.add(line);
-			}
-		}
-		ui.showSearchResult(word, result);
-		return result;
-	}
-	
-	/**
-	 * This method optimises the text for search by 
-	 * 1) adding spaces to the ends, so that a line must contain the full word to be valid
-	 * 2) converting the characters to lower cases, so that cases are ignored
-	 * 3) removing all special characters that are not alphanumeric
-	 */
-	static String optimiseTextForSearch(String text){
-		return " " + text.toLowerCase().replaceAll("[^a-zA-Z0-9 ]+","") + " ";
 	}
 	
 	static void exitProgram(){
