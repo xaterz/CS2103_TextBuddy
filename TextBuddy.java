@@ -185,6 +185,9 @@ public class TextBuddy {
 				case "sort" :
 					sortContent();
 					break;
+				case "search" :
+					searchContent(commandContent);
+					break;
 				case "exit" :
 					exitProgram();
 				default:
@@ -346,23 +349,20 @@ public class TextBuddy {
 			String line = getLine(i);
 			if (line.toLowerCase().contains(word.toLowerCase())) {
 				result.add(line);
-			} else {
-				result.add("");
 			}
 		}
+		showSearchResult(word, result);
 		return result;
 	}
 	
-	static void showSearchResult(ArrayList<String> result){
+	static void showSearchResult(String word, ArrayList<String> result){
 		if (result.isEmpty()) {
-			showToUser(MESSAGE_NO_RESULT);
+			showToUser(String.format(MESSAGE_NO_RESULT, word));
 		} else {
-			showToUser(MESSAGE_SHOWING_RESULT);
+			showToUser(String.format(MESSAGE_SHOWING_RESULT, word));
 			for (int i = 0; i < result.size(); i++) {
 				String line = result.get(i);
-				if (!line.isEmpty()) {
-					showToUser(i + "   " + line);
-				}
+				showToUser(i+1 + "   " + line);
 			}
 		}
 	}
