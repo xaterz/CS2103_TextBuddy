@@ -331,14 +331,15 @@ public class TextBuddy {
 		return (userReply.equals("y") || userReply.equals("yes"));
 	}
 	
-	static Comparator<String> compareLine = new Comparator<String>() {
-		@Override
-		public int compare(String s1, String s2) {
-			return s1.compareTo(s2);
-		}
-	};
-	
 	static void sortContent(){
+		//This comparator ensures that content is sorted alphabetically.
+		Comparator<String> compareLine = new Comparator<String>() {
+			@Override
+			public int compare(String s1, String s2) {
+				return s1.compareTo(s2);
+			}
+		};	
+		
 		textContent.sort(compareLine);
 		showToUser(MESSAGE_CONTENT_SORTED);
 	}
@@ -347,15 +348,22 @@ public class TextBuddy {
 		String optimisedWord = optimiseTextForSearch(word); //so that a valid search result will contain the full word and not just the character sequence
 		ArrayList<String> result = new ArrayList<String>();
 		for (int i = 1; i < textContent.size()+1; i++) {
-			String optimsedLine = optimiseTextForSearch(getLine(i)); //so that the first and last word will be included in the search as well
+			String line = getLine(i);
+			String optimsedLine = optimiseTextForSearch(line); //so that the first and last word will be included in the search as well
 			if (optimsedLine.contains(optimisedWord)) {
-				result.add(getLine(i));
+				result.add(line);
 			}
 		}
 		showSearchResult(word, result);
 		return result;
 	}
 	
+	/**
+	 * This method optimises the text for search by 
+	 * 1) adding spaces to the ends, so that a line must contain the full word to be valid
+	 * 2) converting the characters to lower cases, so that cases are ignored
+	 * 3) removing all special characters that are not alphanumeric
+	 */
 	static String optimiseTextForSearch(String text){
 		return " " + text.toLowerCase().replaceAll("[^a-zA-Z0-9 ]+","") + " ";
 	}
