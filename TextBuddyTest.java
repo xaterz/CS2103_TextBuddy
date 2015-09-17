@@ -217,22 +217,14 @@ public class TextBuddyTest {
 	    assertTrue(expectedLine3.equals(actualLine3));
 	    
 		//Test 2
-	    searchResult = TextBuddy.searchContent("welcome");
-		expectedNumberOfLines = 3;
+	    searchResult = TextBuddy.searchContent("hell");
+		expectedNumberOfLines = 1;
 	    actualNumberOfLines = searchResult.size();
 	    assertTrue(expectedNumberOfLines == actualNumberOfLines);
 		
-		expectedLine1 = "Welcome To Heaven!";
+		expectedLine1 = "Welcome To Hell!";
 	    actualLine1 = searchResult.get(0);
 	    assertTrue(expectedLine1.equals(actualLine1));
-	    
-	    expectedLine2 = "Welcome To Hell!";
-	    actualLine2 = searchResult.get(1);
-	    assertTrue(expectedLine2.equals(actualLine2));
-	    
-	    expectedLine3 = "Welcome To My World!";
-	    actualLine3 = searchResult.get(2);
-	    assertTrue(expectedLine3.equals(actualLine3));
 	}
 	
 	@After
