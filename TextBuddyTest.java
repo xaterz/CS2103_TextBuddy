@@ -183,6 +183,49 @@ public class TextBuddyTest {
 	    assertTrue(expectedLine3.equals(resultLine3));
 	}
 	
+	@Test
+	public void searchTest() {
+		TextBuddy.addText("Welcome To Heaven!");
+		TextBuddy.addText("Welcome To Hell!");
+		TextBuddy.addText("Welcome To My World!");
+		
+		//Test 1
+		//TextBuddy.searchContent("world");
+		int expectedNumberOfLines = 3;
+	    int resultNumberOfLines = TextBuddy.textContent.size();
+	    assertTrue(expectedNumberOfLines == resultNumberOfLines);
+		
+		String expectedLine1 = "Hello World!";
+	    String resultLine1 = TextBuddy.getLine(1);
+	    assertTrue(expectedLine1.equals(resultLine1));
+	    
+	    String expectedLine2 = "Bye Bye World!";
+	    String resultLine2 = TextBuddy.getLine(2);
+	    assertTrue(expectedLine2.equals(resultLine2));
+	    
+	    String expectedLine3 = "Welcome To My World!";
+	    String resultLine3 = TextBuddy.getLine(3);
+	    assertTrue(expectedLine3.equals(resultLine3));
+	    
+		//Test 2
+		//TextBuddy.searchContent("welcome");
+		expectedNumberOfLines = 3;
+	    resultNumberOfLines = TextBuddy.textContent.size();
+	    assertTrue(expectedNumberOfLines == resultNumberOfLines);
+		
+		expectedLine1 = "Welcome To Heaven!";
+	    resultLine1 = TextBuddy.getLine(1);
+	    assertTrue(expectedLine1.equals(resultLine1));
+	    
+	    expectedLine2 = "Welcome To Hell!";
+	    resultLine2 = TextBuddy.getLine(2);
+	    assertTrue(expectedLine2.equals(resultLine2));
+	    
+	    expectedLine3 = "Welcome To My World!";
+	    resultLine3 = TextBuddy.getLine(3);
+	    assertTrue(expectedLine3.equals(resultLine3));
+	}
+	
 	@After
 	public void cleanUp(){
 		TextBuddy.textContent.clear();
