@@ -168,7 +168,7 @@ public class TextBuddyTest {
 	@Test
 	public void sortTest() {
 		TextBuddy.addText("AHHHHH");
-		//TextBuddy.sortContent();
+		TextBuddy.sortContent();
 		
 		String expectedLine1 = "AHHHHH";
 	    String resultLine1 = TextBuddy.getLine(1);
