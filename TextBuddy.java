@@ -3,7 +3,7 @@ package textbuddy.ce2;
 /**
  * TextBuddy is a program that manipulates text in a text file.
  * User can create a new text file or read/update an existing text file.
- * The text contents are temporary stored in TextBuddy, where the user can make changes to the text.
+ * The text content are temporary stored in TextBuddy, where the user can make changes to the text.
  * 
  * User will be prompted to save the changes to the text file before exiting the program.
  * User may also save the changes to the file manually at any time using the save command.
@@ -12,7 +12,7 @@ package textbuddy.ce2;
  * because this method gives the user the freedom of deciding when to save the file.
  * User can also undo all changes made after the last save, by choosing not to save when exiting.
  * 
- * The commands available to the user are add, display, update, insert, delete, clear, save, and exit.
+ * The commands available to the user are add, display, update, insert, delete, clear, sort, search, save, and exit.
  * The command format is given by the example interaction below:
 
 Welcome to TextBuddy!
@@ -33,31 +33,45 @@ Please enter a new text (Enter nothing to cancel) >> Bye bye world!
 Line 2 of content has been updated to 'Bye bye world!'
 >> insert 2
 Inserting new text at line 2...
-Please enter a new text (Enter nothing to cancel) >> See you soon world!
-Inserted 'See you soon world!' into content at line 2.
+Please enter a new text (Enter nothing to cancel) >> Welcome world!
+Inserted 'Welcome world!' into content at line 2.
 >> display
 Displaying content:
 1   Hello world!
-2   See you soon world!
+2   Welcome world!
 3   Bye bye world!
->> delete 3
+>> sort
+Content has been sorted!
+>> display
+Displaying content:
+1   Bye bye world!
+2   Hello world!
+3   Welcome world!
+>> delete 1
 Deleted 'Bye bye world!' from content!
+>> display
+Displaying content:
+1   Hello world!
+2   Welcome world!
+>> search hello
+Showing search results for 'hello':
+1   Hello world!
 >> save
-Would you like to save modified contents to helloWorld.txt? [y/n] >> y
+Would you like to save modified content to helloWorld.txt? [y/n] >> y
 Saving text to helloWorld.txt... Done!
 >> clear
-Are you sure you want to delete all contents? [y/n] >> y
-All contents deleted!
+Are you sure you want to delete all content? [y/n] >> y
+All content deleted!
 >> display
 There's nothing to display!
 >> exit
-Save modified contents to helloWorld.txt? [y/n] >> n
-Contents not saved.
+Save modified content to helloWorld.txt? [y/n] >> n
+Content not saved.
 Exiting TextBuddy... Goodbye!
 
 After TextBuddy exits, helloWorld.txt will look like this:
 Hello world!
-See you soon world!
+Welcome world!
 
  * @author Rufus
  */

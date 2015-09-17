@@ -24,15 +24,15 @@ public class UserInterface {
 	final String MESSAGE_TEXT_DELETED = "Deleted '%1$s' from content!\n";
 	final String MESSAGE_INSERTING_TEXT = "Inserting new text at line %1$s...\n";
 	final String MESSAGE_TEXT_INSERTED = "Inserted '%1$s' into content at line %2$s.\n";
-	final String MESSAGE_CLEAR_CONFIRM = "Are you sure you want to delete all contents? [y/n] ";
-	final String MESSAGE_ALL_CLEARED = "All contents deleted!\n";
-	final String MESSAGE_SAVE_CONFIRM = "Save modified contents to %1$s? [y/n] ";
-	final String MESSAGE_SAVING_CONTENT = "Saving contents to %1$s... ";
-	final String MESSAGE_SAVE_CANCELLED = "Contents not saved.\n";
+	final String MESSAGE_CLEAR_CONFIRM = "Are you sure you want to delete all content? [y/n] ";
+	final String MESSAGE_ALL_CLEARED = "All content deleted!\n";
+	final String MESSAGE_SAVE_CONFIRM = "Save modified content to %1$s? [y/n] ";
+	final String MESSAGE_SAVING_CONTENT = "Saving content to %1$s... ";
+	final String MESSAGE_SAVE_CANCELLED = "Content not saved.\n";
 	final String MESSAGE_INVALID_REPLY = "Error: Invalid input! Please type 'y' (yes) or 'n' (no) ";
-	final String MESSAGE_CONTENT_SORTED = "Contents have been sorted!\n";
+	final String MESSAGE_CONTENT_SORTED = "Content has been sorted!\n";
 	final String MESSAGE_NO_RESULT = "No results found for '%1$s'.\n";
-	final String MESSAGE_SHOWING_RESULT = "Showing search results for '%1$s'.\n";
+	final String MESSAGE_SHOWING_RESULT = "Showing search results for '%1$s':\n";
 	final String MESSAGE_GOODBYE = "Exiting TextBuddy... Goodbye!\n";
 	
 	void showToUser(String message){
