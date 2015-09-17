@@ -25,17 +25,15 @@ public class TextBuddyTest {
 	
 	@Test
 	public void processTest() {
-		String expectedType; String expectedContent; String actualType; String actualContent;
-		
 		//Test 1
 		simulateUserInput("add Hello World");
 		String command = TextBuddy.ui.readInput();
 	    String[] commandParts = TextBuddy.logic.processCommand(command);
 	    
-	    expectedType = "add";
-	    expectedContent = "Hello World";
-	    actualType = commandParts[0];
-	    actualContent = commandParts[1];
+	    String expectedType = "add";
+	    String expectedContent = "Hello World";
+	    String actualType = commandParts[0];
+	    String actualContent = commandParts[1];
 	    assertTrue(expectedType.equals(actualType));
 	    assertTrue(expectedContent.equals(actualContent));
 	    
@@ -58,7 +56,6 @@ public class TextBuddyTest {
 	    
 	    String expectedLine3 = "It's A Small World";
 	    String actualLine3 = TextBuddy.conMan.getLine(3);
-	    //System.out.println("Expected: " + expectedLine3 + " | actual: " + actualLine3);
 	    assertTrue(expectedLine3.equals(actualLine3));
 	}
 	
